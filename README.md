@@ -39,14 +39,12 @@ InkTime este un smartwatch open source și accesibil, bazat pe un display e-pape
 
 | Componentă      | Model                      | Cantitate | Link achiziție                                                                 | Datasheet                                                                              |
 | --------------- | -------------------------- | --------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| MCU             | nRF52840                   | 1         | [JLC](https://jlcpcb.com/partdetail/NordicSemiconductor-nRF52840_QIAA/C190794) | [Datasheet](https://infocenter.nordicsemi.com/pdf/nRF52840_PS_v1.7.pdf)                |
+| MCU             | nRF52840                   | 1         | [JLC](https://jlcpcb.com/partdetail/NordicSemiconductor-nRF52840_QIAA/C190794) | [Datasheet(https://4donline.ihs.com/images/VipMasterIC/IC/NRSA/NRSA-S-A0021008244/NRSA-S-A0021008244-1.pdf?hkey=61A2E4C270F0397D049F8F05BD4F1054)                |
 | Display         | Waveshare 1.54" e-Paper V2 | 1         | [Waveshare](https://www.waveshare.com/1.54inch-e-paper-module.htm)             | [Datasheet](https://www.waveshare.com/w/upload/e/e5/1.54inch_e-paper_V2_Datasheet.pdf) |
-| Baterie         | AKYGA LP502030             | 1         | [TME](https://www.tme.eu/ro/details/akу0106/acumulatori-li-pol/akyga/)         | [Datasheet](https://www.tme.eu/Document/d5a1e7f55a85e85dfc7efba0a36b9e28/AKY0106.pdf)  |
+| Baterie         | AKYGA LP502030             | 1         | [TME](https://www.tme.eu/ro/details/akу0106/acumulatori-li-pol/akyga/)         | [Datasheet](https://www.tme.eu/Document/b9e12bf26ad0ba929a22ab5d58f022cd/AKY0106.pdf)  |
 | LiPo Charger    | BQ25180YBGR                | 1         | [JLC](https://jlcpcb.com/partdetail/TexasInstruments-BQ25180YBGR/C2681658)     | [Datasheet](https://www.ti.com/lit/ds/symlink/bq25180.pdf)                             |
-| DC/DC           | RT6160AWSC                 | 1         | [JLC](https://jlcpcb.com/partdetail/RichTek-RT6160AWSC/C115742)                | [Datasheet](https://www.richtek.com/assets/product_file/RT6160A/DS6160A-02.pdf)        |
-| IMU             | ICM42421                   | 1         | [JLC](https://jlcpcb.com/partdetail/TDK_InvenSense-ICM42421/C2678277)          | [Datasheet](https://invensense.tdk.com/download-pdf/icm-42421-datasheet/)              |
-| Motor vibrații  | FIT0774                    | 1         | [TME](https://www.tme.eu/ro/details/df-fit0774/motoare-dc/dfrobot/fit0774/)    | [Datasheet](https://www.dfrobot.com/product-1734.html)                                 |
-| USB-C connector | USB4135-GF-A               | 1         | [JLC](https://jlcpcb.com/partdetail/GlobalConnector-USB4135_GF_A/C2765186)     | -                                                                                      |
+| Motor vibrații  | FIT0774                    | 1         | [TME](https://www.tme.eu/ro/details/df-fit0774/motoare-dc/dfrobot/fit0774/)    | [Datasheet](https://www.mouser.com/pdfDocs/ProductOverview_DFRobot-FIT0774.pdf)                                 |
+| USB-C connector | USB4135-GF-A               | 1         | [JLC](https://ar.mouser.com/datasheet/2/837/usb4135-2930399.pdf)     | -                                                                                      |
 
 ---
 
