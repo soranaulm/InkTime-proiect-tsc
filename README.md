@@ -44,7 +44,7 @@ InkTime este un smartwatch open source și accesibil, bazat pe un display e-pape
 | Baterie         | AKYGA LP502030             | 1         | [TME](https://www.tme.eu/ro/details/akу0106/acumulatori-li-pol/akyga/)         | [Datasheet](https://www.tme.eu/Document/b9e12bf26ad0ba929a22ab5d58f022cd/AKY0106.pdf)  |
 | LiPo Charger    | BQ25180YBGR                | 1         | [JLC](https://jlcpcb.com/partdetail/TexasInstruments-BQ25180YBGR/C2681658)     | [Datasheet](https://www.ti.com/lit/ds/symlink/bq25180.pdf)                             |
 | Motor vibrații  | FIT0774                    | 1         | [TME](https://www.tme.eu/ro/details/df-fit0774/motoare-dc/dfrobot/fit0774/)    | [Datasheet](https://www.mouser.com/pdfDocs/ProductOverview_DFRobot-FIT0774.pdf)                                 |
-| USB-C connector | USB4135-GF-A               | 1         | [JLC](https://ar.mouser.com/datasheet/2/837/usb4135-2930399.pdf)     | -                                                                                      |
+| USB-C connector | USB4135-GF-A               | 1         | [JLC](https://ar.mouser.com/datasheet/2/837/usb4135-2930399.pdf)     |     - [Datasheet]  (https://ar.mouser.com/datasheet/2/837/usb4135-2930399.pdf) |                                                                                      |
 
 ---
 
