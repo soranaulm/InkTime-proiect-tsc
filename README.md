@@ -69,89 +69,74 @@ InkTime este un smartwatch open source și accesibil, bazat pe un display e-pape
 
 ## Descriere funcționalitate hardware
 
-### MCU — nRF52840
+MCU — nRF52840
+Microcontroller-ul principal al proiectului. Are integrat Bluetooth 5.0, suportă SPI, I2C, UART și GPIO. Rulează la 3.3V, consumă ~1.5mA activ și sub 2μA în deep sleep. Procesor ARM Cortex-M4F la 64MHz, 1MB Flash și 256KB RAM.
+Display e-Paper 1.54" (Waveshare V2)
+Display electrofotoreic bistabil cu rezoluție 200×200 pixeli. Conectat prin SPI 4 fire. Consumul în deep sleep este sub 2μA. Imaginea rămâne afișată fără consum de energie (bi-stable) — ideal pentru smartwatch.
+Baterie AKYGA LP502030
+Baterie Li-Po de 250mAh, 3.7V nominal. Se conectează direct la două test pad-uri de pe PCB (TP_BAT și TP_BAT_GND), fără conector JST, pentru economisirea spațiului în carcasă.
+LiPo Charger — BQ25180YBGR
+Circuit de încărcare a bateriei Li-Po, conectat prin I2C la MCU. Suportă încărcare CC/CV, protecție la supraîncărcare (4.3V) și supradescărcare (2.5V). Tensiunea de intrare vine de la USB-C (VBUS 5V).
+DC/DC Converter — RT6160AWSC
+Convertor buck care generează 3.3V pentru MCU și restul componentelor. Eficiență ~90%, comunicație I2C pentru configurare dinamică a tensiunii de ieșire.
+IMU — BMA423
+Accelerometru 3-axis conectat prin I2C. Detectează mișcări, orientare, pași și gesture-uri. Întreruperile IMU_INT1 și IMU_INT2 sunt conectate la GPIO-uri ale MCU.
+Haptic Driver — DRV2605YZFR
+Driver pentru motorul de vibrații, conectat prin I2C. Controlează FIT0774 și permite pattern-uri de vibrații complexe pentru notificări tactile diferențiate.
+Motor vibrații — FIT0774
+Motor DC de vibrații (10×2.7mm), controlat prin DRV2605 via tranzistor N-channel. Folosit pentru notificări tactile.
+Fuel Gauge — MAX17048G+T10
+Monitorizare nivel baterie prin I2C. Oferă MCU-ului informații despre starea de încărcare (SOC) a bateriei.
+ESD Protection — USBLC6-2SC6Y
+Protecție ESD pe liniile USB-C (VBUS, D+, D-) pentru protejarea MCU-ului.
+Butoane
+3 butoane tactile SMD (SW_UP, SW_ENT, SW_DN) cu condensatoare de debounce, conectate la GPIO-urile MCU.
 
-Microcontroller-ul principal al proiectului. Are integrat Bluetooth 5.0 și suportă comunicație SPI, I2C și GPIO. Rulează la 3.3V și consumă ~1.5mA în mod activ.
+Pini nRF52840 utilizați
+ComponentăSemnalPin nRF52840InterfațăMotive-PaperEPD_CSP0.04SPIChip Select displaye-PaperEPD_BUSYP0.13GPIOStatus displaye-PaperEPD_RSTP0.14GPIOReset displaye-PaperMOSIP0.30SPIDate SPIe-PaperSCKP0.29SPIClock SPII2C (toți)SDAP0.06I2CDate I2C shared busI2C (toți)SCLP0.07I2CClock I2C shared busIMUIMU_INT1P0.08GPIOÎntrerupere IMU primarăIMUIMU_INT2P0.09GPIOÎntrerupere IMU secundarăLiPo ChargerPMIC_INTP0.11GPIOÎntrerupere PMIC/chargerHaptic DriverHAPTIC_ENP0.12GPIOEnable motor vibrațiiSWDSWDIOP1.02SWDDebug dataSWDSWDCLKP1.00SWDDebug clock
 
-### Display e-Paper 1.54" (Waveshare V2)
+Calcul consum de energie
+ComponentăConsum activConsum sleepnRF52840~1.5mA~2μAe-Paper display~8mAs/refresh~2μABMA423 IMU~0.5mA~6μABQ25180 Charger~50mA (încărcare)~5μART6160 DC/DCeficiență ~90%-DRV2605 + FIT0774~50mA (vibrație)~0μA
+Estimare autonomie:
 
-Display electrofotoreic bistabil cu rezoluție 200×200 pixeli. Conectat prin interfață SPI 4 fire. Consumul în deep sleep este sub 2μA — ideal pentru un smartwatch. Imaginea rămâne afișată fără consum de energie.
+Baterie: 250mAh
+Consum mediu estimat (refresh 1x/min, BT off, fără vibrații): ~0.5mA
+Autonomie estimată: ~500 ore (~20 zile)
 
-### Baterie AKYGA LP502030
 
-Baterie Li-Po de 250mAh, 3.7V nominal. Se conectează direct la test pad-urile de pe PCB (fără conector JST). Asigură autonomie estimată de aproximativ 7 zile în condiții normale de utilizare.
-
-### LiPo Charger — BQ25180YBGR
-
-Circuit integrat de încărcare a bateriei, conectat prin I2C la MCU. Suportă încărcare CC/CV, protecție la supraîncărcare (4.3V) și supradescărcare (2.5V). Tensiunea de intrare vine de la USB-C (VBUS).
-
-### DC/DC — RT6160AWSC
-
-Convertor DC/DC step-down care generează tensiunea de 3.3V necesară MCU-ului și celorlalte componente. Eficiență ridicată, minimizând consumul din baterie.
-
-### IMU — ICM42421
-
-Senzor inertial (accelerometru + giroscop) conectat prin I2C. Folosit pentru detectarea mișcărilor, orientării și numărarea pașilor. Întreruperile sunt conectate la pinii IMU_INT1 și IMU_INT2.
-
-### Motor vibrații — FIT0774
-
-Motor DC de vibrații (10×2.7mm), controlat prin GPIO via un tranzistor. Folosit pentru notificări tactile.
-
-### Butoane
-
-3 butoane fizice conectate direct la GPIO-urile MCU-ului, pentru navigarea în interfață.
-
----
-
-## Pini nRF52840 utilizați
-
-| Componentă         | Semnal    | Pin nRF52840 | Interfață | Motiv               |
-| ------------------ | --------- | ------------ | --------- | ------------------- |
-| e-Paper            | EPD_CS    | P0.04        | SPI       | Chip Select display |
-| e-Paper            | EPD_BUSY  | P0.13        | GPIO      | Status display      |
-| e-Paper            | EPD_RST   | P0.14        | GPIO      | Reset display       |
-| e-Paper            | MOSI      | P0.30        | SPI       | Date SPI            |
-| e-Paper            | SCK       | P0.29        | SPI       | Clock SPI           |
-| I2C (IMU, Charger) | SDA       | P0.06        | I2C       | Date I2C            |
-| I2C (IMU, Charger) | SCL       | P0.07        | I2C       | Clock I2C           |
-| IMU                | IMU_INT1  | P0.08        | GPIO      | Întrerupere IMU     |
-| IMU                | IMU_INT2  | P0.09        | GPIO      | Întrerupere IMU     |
-| LiPo Charger       | PMIC_INT  | P0.11        | GPIO      | Întrerupere PMIC    |
-| Motor vibrații     | HAPTIC_EN | P0.12        | GPIO      | Enable motor        |
-| SWD                | SWDIO     | P1.02        | SWD       | Debug data          |
-| SWD                | SWDCLK    | P1.00        | SWD       | Debug clock         |
-
----
-
-## Calcul consum de energie
-
-| Componentă      | Consum activ      | Consum sleep |
-| --------------- | ----------------- | ------------ |
-| nRF52840        | ~1.5mA            | ~2μA         |
-| e-Paper display | ~8mAs/refresh     | ~2μA         |
-| ICM42421 IMU    | ~0.5mA            | ~6μA         |
-| BQ25180 Charger | ~50mA (încărcare) | ~5μA         |
-| RT6160 DC/DC    | eficiență ~90%    | -            |
-
-**Estimare autonomie:**
-
-- Baterie: 250mAh
-- Consum mediu estimat (refresh display 1x/min, BT off): ~0.5mA
-- Autonomie estimată: **~500 ore (~20 zile)**
-
----
+## Arhitectura PCB
+PCB-ul a fost realizat pe 4 straturi, cu următoarea structură:
+StratRolLayer 1 (TOP)Semnale + componenteLayer 2 (c63Route63)Plan de masă GNDLayer 3Semnale interneLayer 4 (BOTTOM)Semnale + plan de masă
+Rutarea pe 4 straturi a permis o densitate mai mare de trasee și o mai bună integritate a semnalului, în special pentru traseele RF.
+Via stitching a fost aplicat între planurile de masă TOP și BOTTOM, în special în jurul circuitului radio (nRF52840 + antenă 2450AT18B100E).
+Zona de sub antenă a fost decupată — nu există plan de masă și nu sunt rutate semnale sub antenă, conform cerințelor pentru performanță RF optimă.
 
 ## Decizii de design
 
-- Bateria se conectează direct la test pad-uri pe PCB (nu prin conector JST) pentru economisirea spațiului în carcasă.
-- PCB-ul are grosimea de 1mm (nu standard 1.6mm) pentru a încăpea în carcasă.
-- Antena nRF52840 este plasată spre exteriorul PCB-ului, cu decupaj sub antenă conform cerințelor.
-- Componentele sunt plasate exclusiv pe layer-ul TOP.
-- Condensatoarele de decuplare 100nF sunt plasate cât mai aproape de pinii de alimentare.
-- Via stitching aplicat între planurile de masă TOP și BOTTOM, în special lângă circuitul radio.
+Bateria se conectează direct la test pad-urile TP_BAT și TP_BAT_GND (fără conector JST) pentru economisirea spațiului.
+PCB grosime 1mm (nu 1.6mm standard) pentru a încăpea în carcasă.
+Antena plasată spre exteriorul PCB-ului, cu decupaj sub ea.
+Toate componentele plasate exclusiv pe layer-ul TOP.
+Condensatoare de decuplare 100nF (0201) cât mai aproape de pinii de alimentare.
+Trasee de putere rutate cu 0.3mm, semnale de date cu minim 0.15mm.
+Trasee fără unghiuri drepte.
 
----
+## Erori DRC acceptate
+Am acceptat erori de tip: 
+- Smd-Via, aparute in urma via in pad;
+- Cele de tip Wire-Wire, care sunt doar in pad, nu pe trasee si le-am dat approve caci, real-life, putem potrivi acele fire in pad astfel incat sa nu se suprapuna;
+- Cele de tip Wire-Via, Smd-Wire cu aceeasi mentiune;
+- Cele de tip Solid-Polygon Shape-Pad, aparute in urma plasarii butoanelor pe PCB, care nu reprezinta o problema(ignorate conform cerintelor proiectului;
+
+## Imagini
+
+![Block Diagram](Images/block_diagram.png)
+![Schematic Sheet 1](Images/Screenshot%202026-04-10%20162746.png)
+![Schematic Sheet 2](Images/Screenshot%202026-04-10%20162801.png)
+![PCB Top](Images/Screenshot%202026-04-10%20162824.png)
+![3D Model](Images/Screenshot%202026-04-10%20162801.png)
+![InkTime SmartWatch](Images/Screenshot%202026-04-10%20162801.png)
 
 ## Licență
 
-Apache 2.0
+Apache 2.0 — vezi fișierul [LICENSE](LICENSE)
