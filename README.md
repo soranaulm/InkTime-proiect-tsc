@@ -181,8 +181,8 @@ Am acceptat erori de tip:
 ![Schematic Sheet 1](Images/Screenshot%202026-04-10%20162746.png)
 ![Schematic Sheet 2](Images/Screenshot%202026-04-10%20162801.png)
 ![PCB Top](Images/Screenshot%202026-04-10%20162824.png)
-![3D Model](Images/Screenshot%202026-04-10%20162801.png)
-![InkTime SmartWatch](Images/Screenshot%202026-04-10%20162801.png)
+![3D Model](Images/Screenshot%202026-04-10%114555.png)
+![InkTime SmartWatch](Images/Screenshot%202026-04-10%162855.png)
 
 ## Licență
 
