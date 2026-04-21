@@ -2,7 +2,6 @@
 
 InkTime este un smartwatch open source și accesibil, bazat pe un display e-paper și microcontroller-ul nRF52840.
 
----
 
 ## Diagramă bloc
 
