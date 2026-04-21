@@ -68,40 +68,88 @@ InkTime este un smartwatch open source și accesibil, bazat pe un display e-pape
 
 ## Descriere funcționalitate hardware
 
-MCU — nRF52840
+### MCU — nRF52840
+
 Microcontroller-ul principal al proiectului. Are integrat Bluetooth 5.0, suportă SPI, I2C, UART și GPIO. Rulează la 3.3V, consumă ~1.5mA activ și sub 2μA în deep sleep. Procesor ARM Cortex-M4F la 64MHz, 1MB Flash și 256KB RAM.
-Display e-Paper 1.54" (Waveshare V2)
+
+### Display e-Paper 1.54" (Waveshare V2)
+
 Display electrofotoreic bistabil cu rezoluție 200×200 pixeli. Conectat prin SPI 4 fire. Consumul în deep sleep este sub 2μA. Imaginea rămâne afișată fără consum de energie (bi-stable) — ideal pentru smartwatch.
-Baterie AKYGA LP502030
+
+### Baterie AKYGA LP502030
+
 Baterie Li-Po de 250mAh, 3.7V nominal. Se conectează direct la două test pad-uri de pe PCB (TP_BAT și TP_BAT_GND), fără conector JST, pentru economisirea spațiului în carcasă.
-LiPo Charger — BQ25180YBGR
+
+### LiPo Charger — BQ25180YBGR
+
 Circuit de încărcare a bateriei Li-Po, conectat prin I2C la MCU. Suportă încărcare CC/CV, protecție la supraîncărcare (4.3V) și supradescărcare (2.5V). Tensiunea de intrare vine de la USB-C (VBUS 5V).
-DC/DC Converter — RT6160AWSC
+
+### DC/DC Converter — RT6160AWSC
+
 Convertor buck care generează 3.3V pentru MCU și restul componentelor. Eficiență ~90%, comunicație I2C pentru configurare dinamică a tensiunii de ieșire.
-IMU — BMA423
+
+### IMU — BMA423
+
 Accelerometru 3-axis conectat prin I2C. Detectează mișcări, orientare, pași și gesture-uri. Întreruperile IMU_INT1 și IMU_INT2 sunt conectate la GPIO-uri ale MCU.
-Haptic Driver — DRV2605YZFR
+
+### Haptic Driver — DRV2605YZFR
+
 Driver pentru motorul de vibrații, conectat prin I2C. Controlează FIT0774 și permite pattern-uri de vibrații complexe pentru notificări tactile diferențiate.
-Motor vibrații — FIT0774
+
+### Motor vibrații — FIT0774
+
 Motor DC de vibrații (10×2.7mm), controlat prin DRV2605 via tranzistor N-channel. Folosit pentru notificări tactile.
-Fuel Gauge — MAX17048G+T10
+
+### Fuel Gauge — MAX17048G+T10
+
 Monitorizare nivel baterie prin I2C. Oferă MCU-ului informații despre starea de încărcare (SOC) a bateriei.
-ESD Protection — USBLC6-2SC6Y
+
+### ESD Protection — USBLC6-2SC6Y
+
 Protecție ESD pe liniile USB-C (VBUS, D+, D-) pentru protejarea MCU-ului.
-Butoane
+
+### Butoane
+
 3 butoane tactile SMD (SW_UP, SW_ENT, SW_DN) cu condensatoare de debounce, conectate la GPIO-urile MCU.
 
-Pini nRF52840 utilizați
-ComponentăSemnalPin nRF52840InterfațăMotive-PaperEPD_CSP0.04SPIChip Select displaye-PaperEPD_BUSYP0.13GPIOStatus displaye-PaperEPD_RSTP0.14GPIOReset displaye-PaperMOSIP0.30SPIDate SPIe-PaperSCKP0.29SPIClock SPII2C (toți)SDAP0.06I2CDate I2C shared busI2C (toți)SCLP0.07I2CClock I2C shared busIMUIMU_INT1P0.08GPIOÎntrerupere IMU primarăIMUIMU_INT2P0.09GPIOÎntrerupere IMU secundarăLiPo ChargerPMIC_INTP0.11GPIOÎntrerupere PMIC/chargerHaptic DriverHAPTIC_ENP0.12GPIOEnable motor vibrațiiSWDSWDIOP1.02SWDDebug dataSWDSWDCLKP1.00SWDDebug clock
+---
 
-Calcul consum de energie
-ComponentăConsum activConsum sleepnRF52840~1.5mA~2μAe-Paper display~8mAs/refresh~2μABMA423 IMU~0.5mA~6μABQ25180 Charger~50mA (încărcare)~5μART6160 DC/DCeficiență ~90%-DRV2605 + FIT0774~50mA (vibrație)~0μA
-Estimare autonomie:
+## Pini nRF52840 utilizați
 
-Baterie: 250mAh
-Consum mediu estimat (refresh 1x/min, BT off, fără vibrații): ~0.5mA
-Autonomie estimată: ~500 ore (~20 zile)
+| Componentă         | Semnal     | Pin nRF52840 | Interfață | Motiv                     |
+| ------------------ | ---------- | ------------ | --------- | ------------------------- |
+| e-Paper            | EPD_CS     | P0.04        | SPI       | Chip Select display       |
+| e-Paper            | EPD_BUSY   | P0.13        | GPIO      | Status display            |
+| e-Paper            | EPD_RST    | P0.14        | GPIO      | Reset display             |
+| e-Paper            | MOSI       | P0.30        | SPI       | Date SPI                  |
+| e-Paper            | SCK        | P0.29        | SPI       | Clock SPI                 |
+| I2C (toți)         | SDA        | P0.06        | I2C       | Date I2C shared bus       |
+| I2C (toți)         | SCL        | P0.07        | I2C       | Clock I2C shared bus      |
+| IMU                | IMU_INT1   | P0.08        | GPIO      | Întrerupere IMU primară   |
+| IMU                | IMU_INT2   | P0.09        | GPIO      | Întrerupere IMU secundară |
+| LiPo Charger       | PMIC_INT   | P0.11        | GPIO      | Întrerupere PMIC/charger  |
+| Haptic Driver      | HAPTIC_EN  | P0.12        | GPIO      | Enable motor vibrații     |
+| SWD                | SWDIO      | P1.02        | SWD       | Debug data                |
+| SWD                | SWDCLK     | P1.00        | SWD       | Debug clock               |
 
+---
+
+## Calcul consum de energie
+
+| Componentă        | Consum activ      | Consum sleep |
+| ----------------- | ----------------- | ------------ |
+| nRF52840          | ~1.5mA            | ~2μA         |
+| e-Paper display   | ~8mAs/refresh     | ~2μA         |
+| BMA423 IMU        | ~0.5mA            | ~6μA         |
+| BQ25180 Charger   | ~50mA (încărcare) | ~5μA         |
+| RT6160 DC/DC      | eficiență ~90%    | -            |
+| DRV2605 + FIT0774 | ~50mA (vibrație)  | ~0μA         |
+
+**Estimare autonomie:**
+
+- Baterie: 250mAh
+- Consum mediu estimat (refresh 1x/min, BT off, fără vibrații): ~0.5mA
+- Autonomie estimată: **~500 ore (~20 zile)**
 
 ## Arhitectura PCB
 PCB-ul a fost realizat pe 4 straturi, cu următoarea structură:
