@@ -177,7 +177,6 @@ Am acceptat erori de tip:
 
 ## Imagini
 
-![Block Diagram](Images/block_diagram.png)
 ![Schematic Sheet 1](Images/Screenshot%202026-04-21%20114315.png)
 ![Schematic Sheet 2](Images/Screenshot%202026-04-21%20114327.png)
 ![PCB Top](Images/Screenshot%202026-04-10%20162855.png)
